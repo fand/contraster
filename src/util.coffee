@@ -38,8 +38,16 @@ css = (el, key, value) ->
         return str2array style
     return style
 
+getBg = (q) ->
+    box = document.querySelector q
+    return unless box
+    bg = getComputedStyle(box).backgroundColor
+    return if bg.match /^\s*$/
+    return str2array bg
+
 module.exports =
     str2array: str2array
     array2str: array2str
     array2code: array2code
     css: css
+    getBg: getBg

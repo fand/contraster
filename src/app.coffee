@@ -2,30 +2,23 @@ contrast = require './contrast.coffee'
 util = require './util.coffee'
 require 'angular/angular'
 
-hslCtrl = ($scope, $element) ->
-    $scope.hsls = [
-       { text: 'foo', h: 20,  s: 100, l: 50 },
-       { text: 'bar', h: 140, s: 100, l: 50 },
-       { text: 'baz', h: 260, s: 100, l: 50 }
-    ]
+app = angular.module 'contrastApp', []
+app.directive 'contrast', ->
+    scope:
+        h:  '='
+        text: '@'
+    replace: true
+    templateUrl: '/public/contrast.html'
+    link: (scope, element, attr) ->
+        scope.s = 100
+        scope.l = 50
 
-    for i in [0...($scope.hsls.length)]
-        $scope.$watch 'hsls['+i+']', ((val) -> update(val)), true
+        scope.$watch 's', -> update()
+        scope.$watch 'l', -> update()
 
-    update = (hsl) ->
-        box = document.querySelector '.box'
-        return unless box
-        bg = getComputedStyle(box).backgroundColor
-        return if bg.match /^\s*$/
-        bg = util.str2array bg
-        hsl_array = [+hsl.h, +hsl.s, +hsl.l]
-        rgb = contrast.readableDark bg, hsl_array, 2.0
-        code = util.array2code rgb
-        console.log code
-        $element.css 'color', code
-
-
-app = angular.module 'hslApp', []
-app.controller 'hslCtrl', ['$scope', '$element', hslCtrl]
-app.directive 'hsl', ->
-    link: hslLink
+        update = () ->
+            bg = util.getBg '.box'
+            hsl_array = [+scope.h, +scope.s, +scope.l]
+            rgb = contrast.readableDark bg, hsl_array, 3.0
+            code = util.array2code rgb
+            element.css 'color', code

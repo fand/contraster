@@ -1,24 +1,10 @@
 <title> contraster </title>
 <link rel="stylesheet" href="public/main.css" type="text/css">
 
-<body ng-App="hslApp">
-  <div ng-controller="hslCtrl">
-    <div class="box" ng-repeat="hsl in hsls">
-      <h1>{{ hsl.text }}</h1>
-      <div class="form">
-        <div>saturation</div>
-        <input type="range" ng-model="hsl.s" min="0" max="100">
-      </div>
-      <div class="form">
-        <div>lightness</div>
-        <input type="range" ng-model="hsl.l" min="0" max="100">
-      </div>
-    </div>
-
-    <div ng-repeat="todo in todos">
-      <input type="checkbox" ng-model="todo.done">
-    </div>
-  </div>
+<body ng-App="contrastApp">
+  <div contrast h="20"  text="foo"></div>
+  <div contrast h="140" text="bar"></div>
+  <div contrast h="260" text="baz"></div>
 </body>
 
 <script src="public/app.js"></script>

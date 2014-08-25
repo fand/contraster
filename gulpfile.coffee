@@ -27,8 +27,8 @@ gulp.task 'css', ->
         .pipe gulp.dest './public'
 
 gulp.task 'watch', ['build'], ->
-    gulp.watch 'app/**/*.coffee', ['js']
-    gulp.watch 'app/styles/**/*.scss', ['css']
+    gulp.watch 'src/**/*.coffee', ['js']
+    gulp.watch 'styles/**/*.scss', ['css']
 
 gulp.task 'build', ['js', 'css']
 gulp.task 'default', ['build']
