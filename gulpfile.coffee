@@ -19,27 +19,16 @@ gulp.task 'js', ->
     .pipe source 'app.js'
     .pipe gulp.dest 'public'
 
-# gulp.task "vendor", ->
-#     browserify()
-#         .pipe plumber()
-#         .transform(debowerify)
-#         .require "./bower_components/**/*.js"
-#         .pipe source("vendor.js")
-#         .pipe gulp.dest("./public")
-
 gulp.task 'css', ->
     gulp
-        .src './app/styles/*.scss'
+        .src './public/*.scss'
         .pipe plumber()
         .pipe sass()
         .pipe gulp.dest './public'
 
 gulp.task 'watch', ['build'], ->
     gulp.watch 'app/**/*.coffee', ['js']
-    gulp.watch 'app/**/*.jade', ['js']
     gulp.watch 'app/styles/**/*.scss', ['css']
-    # gulp.watch 'bower_components/**/*.js', ['vendor']
 
-#gulp.task 'build', ['vendor', 'js', 'css']
 gulp.task 'build', ['js', 'css']
 gulp.task 'default', ['build']

@@ -1,30 +1,6 @@
-<style>
-  .box {
-    float: left;
-    width: 300px;
-    height: 25 0px;
-    margin: 20px;
-    background-color: #edeeef;
-    border: 2px solid #abc;
-    border-radius: 3px;
-    box-shadow: 0px 5px 5px rgba(0,0,0,0.3);
-    line-height: 72px;
-    font-size: 72px;
-    vertical-align: middle;
-    text-align: center;
-  }
-  .form {
-    font-size: 12px;
-  }
-  .form > div {
-    display: inline-block;
-    text-align: left;
-    min-width: 70px;
-  }
-  .form > input {
-    min-width: 170px;
-  }
-</style>
+<title> contraster </title>
+<link rel="stylesheet" href="public/main.css" type="text/css">
+
 <body ng-App="hslApp">
   <div ng-controller="hslCtrl">
     <div class="box" ng-repeat="hsl in hsls">
@@ -45,4 +21,4 @@
   </div>
 </body>
 
-<script src="out.js"></script>
+<script src="public/app.js"></script>
