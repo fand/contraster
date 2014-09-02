@@ -8,7 +8,7 @@ app.directive 'contrast', ->
         h:  '='
         text: '@'
     replace: true
-    templateUrl: '/public/contrast.html'
+    templateUrl: '/templates/contrast.html'
     link: (scope, element, attr) ->
         scope.s = 100
         scope.l = 50

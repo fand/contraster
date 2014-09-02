@@ -7,6 +7,7 @@ bowerFiles = require "main-bower-files"
 source     = require 'vinyl-source-stream'
 browserify = require 'browserify'
 debowerify = require 'debowerify'
+webserver  = require 'gulp-webserver'
 
 gulp.task 'js', ->
     browserify
@@ -21,14 +22,20 @@ gulp.task 'js', ->
 
 gulp.task 'css', ->
     gulp
-        .src './public/*.scss'
+        .src './public/css/*.scss'
         .pipe plumber()
         .pipe sass()
-        .pipe gulp.dest './public'
+        .pipe gulp.dest './public/css'
+
+gulp.task 'server', ->
+    gulp.src 'public/'
+        .pipe webserver
+            open: true
+            livereload: true
 
 gulp.task 'watch', ['build'], ->
     gulp.watch 'src/**/*.coffee', ['js']
-    gulp.watch 'styles/**/*.scss', ['css']
+    gulp.watch 'public/**/*.scss', ['css']
 
 gulp.task 'build', ['js', 'css']
-gulp.task 'default', ['build']
+gulp.task 'default', ['build', 'watch', 'server']

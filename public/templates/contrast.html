@@ -1,0 +1,15 @@
+<div class="box">
+  <h1 ng-click="yo()">{{ text }}</h1>
+  <h2>{{ text }}</h1>
+  <div class="form">
+    <div>saturation</div>
+    <input type="range" ng-model="s" min="0" max="100">
+  </div>
+  <div class="form">
+    <div>lightness</div>
+    <input type="range" ng-model="l" min="0" max="100">
+  </div>
+
+  <div class="validator valid"   ng-show="isValid">valid</div>
+  <div class="validator invalid" ng-show="!isValid">invalid</div>
+</div>
