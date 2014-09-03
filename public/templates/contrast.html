@@ -1,12 +1,13 @@
 <div class="contraster">
   <div class="box">
-    <h1 ng-click="yo()">{{ text }}</h1>
-    <h2>{{ text }}</h2>
+    <h1 ng-style="{'color': rgb_code}">{{ text }}</h1>
+    <h2>{{ hsl_code }}</h2>
+    <h2>{{ rgb_code }}</h2>    
     <div class="form">
+      <div>hue</div>
+      <input type="range" ng-model="h" min="0" max="360">
       <div>saturation</div>
       <input type="range" ng-model="s" min="0" max="100">
-    </div>
-    <div class="form">
       <div>lightness</div>
       <input type="range" ng-model="l" min="0" max="100">
     </div>
