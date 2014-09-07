@@ -38,10 +38,10 @@ app.directive 'contrast', ->
                 return false if c < 0 or 255 < c
             return true
 
-        scope.contrast = 2.5
+        scope.contrast = 1.5
         scope.h = scope.hue
-        scope.s = 100
-        scope.l = 50
+        scope.s = 90
+        scope.l = 75
         update parameter: 'l'
 
         scope.$watch 'contrast', -> update parameter: 'l'
