@@ -11,25 +11,40 @@ app.directive 'contrast', ->
     templateUrl: '/templates/contrast.html'
     link: (scope, element, attr) ->
         box = element[0].querySelector '.box'
+        bg = util.getBg '.box'
+        fix = 's'
 
-        update = () ->
-            bg = util.getBg '.box'
+        update = (option) ->
             hsl_array = [+scope.h, +scope.s, +scope.l]
-            rgb = contrast.darkOnLight bg, hsl_array, 3.0
-            scope.rgb_code = util.array2code rgb
-            scope.hsl_code = util.array2str 'hsl', util.rgb2hsl(rgb)
-            scope.isValid = validate rgb
+            result = contrast.darkOnLight bg, hsl_array, scope.contrast, option.parameter
+
+            if result?
+                scope.is_valid = true
+                scope.hsl_code = util.array2str 'hsl', result.hsl
+                scope.rgb_code = util.array2code result.rgb
+                scope.contrast_new = result.contrast
+                scope.h = result.hsl[0]
+                scope.s = result.hsl[1] * 100.0
+                scope.l = result.hsl[2] * 100.0
+
+            else
+                scope.is_valid = false
+                scope.hsl_code = '-'
+                scope.rgb_code = '-'
+                scope.contrast_new = '-'
 
         validate = (array) ->
             for c in array
                 return false if c < 0 or 255 < c
             return true
 
+        scope.contrast = 2.5
         scope.h = scope.hue
         scope.s = 100
         scope.l = 50
-        update()
+        update parameter: 'l'
 
-        scope.$watch 'h', -> update()
-        scope.$watch 's', -> update()
-        scope.$watch 'l', -> update()
+        scope.$watch 'contrast', -> update parameter: 'l'
+        scope.$watch 'h', -> update parameter: 'l'
+        scope.$watch 's', -> update parameter: 'l'
+        scope.$watch 'l', -> update parameter: 's'

@@ -32,6 +32,7 @@ gulp.task 'server', ->
         .pipe webserver
             open: true
             livereload: true
+            port: 9999
 
 gulp.task 'watch', ['build'], ->
     gulp.watch 'src/**/*.coffee', ['js']

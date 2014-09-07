@@ -2,8 +2,11 @@
   <div class="box">
     <h1 ng-style="{'color': rgb_code}">{{ text }}</h1>
     <h2>{{ hsl_code }}</h2>
-    <h2>{{ rgb_code }}</h2>    
+    <h2>{{ rgb_code }}</h2>
+    <h2>contrast: {{ contrast_new.toString() | limitTo:4 }}</h2>
     <div class="form">
+      <div>minimum contrast</div>
+      <input type="number" ng-model="contrast" min="1.0" max="5.0">
       <div>hue</div>
       <input type="range" ng-model="h" min="0" max="360">
       <div>saturation</div>
@@ -13,6 +16,6 @@
     </div>
   </div>
 
-  <div class="validator valid"   ng-show="isValid">valid!</div>
-  <div class="validator invalid" ng-show="!isValid">invalid</div>
+  <div class="validator valid"   ng-show="is_valid">valid!</div>
+  <div class="validator invalid" ng-show="!is_valid">invalid</div>
 </div>

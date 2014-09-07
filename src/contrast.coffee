@@ -40,46 +40,100 @@ luminance2rgb = (l, rgb) ->
     return result
 
 
-# Get fg color on dark bg
+# Calculate light fromtground color on dark background.
+#
+# move saturation or lightness.
 #
 # @param  {number[]} bg    - Color of dark bg
 # @param  {number}   ratio - Contrast ratio between bg & fg
 # @param  {number}   hue   - Hue of fg
+# @param  {string}   parameter - parameter to move, {s|l}.
 # @return {number[]} color - Color of fg
 #
-readableLight = (bg, hsl, ratio) ->
-    hsl = formatHSL hsl
+lightOnDark = (bg, hsl, ratio, parameter) ->
+    [hue, s, l] = formatHSL hsl
 
-    # (l_fg + 0.05) / (l_bg + 0.05) == ratio
-    l_bg = rgb2luminance bg
-    l_fg = (l_bg + 0.05) * ratio - 0.05
+    # (luminance_fg + 0.05) / (luminance_bg + 0.05) > ratio
+    luminance_bg = rgb2luminance bg
 
-    # rgb を計算
-    rgb = hsl2rgb hsl
-    result = luminance2rgb l_fg, rgb
-    return result
+    # 気合で探す
+    candidates = [0..100]
+    hsl_candidates = switch parameter
+        when 's' then [hue, c/100.0, l] for c in candidates
+        when 'l' then [hue, s, c/100.0] for c in candidates
+
+    readables = candidates.filter (c) ->
+        rgb = hsl2rgb [hue, c / 100.0, l]
+        luminance = rgb2luminance rgb
+        return (luminance  + 0.05) / (luminance_bg + 0.05) > ratio
+
+    # the color cant be readable
+    return null if readables.length == 0
+
+    p = if parameter == 's' then s else l
+    p_nearest = -1
+    diff_min = parseFloat 'inf'
+    for r in readables
+        diff = Math.abs(r - p)
+        if diff < diff_min
+            p_nearest = r
+            min = diff
+    return switch parameter
+        when 's' then [hue, p_nearest, l]
+        when 'l' then [hue, s, p_nearest]
 
 
-# Get fg color on light bg
+# Calculate light fromtground color on dark background.
 #
-# @param  {number[]} bg    - Color of light bg
+# move saturation or lightness.
+#
+# @param  {number[]} bg    - Color of dark bg
 # @param  {number}   ratio - Contrast ratio between bg & fg
 # @param  {number}   hue   - Hue of fg
-# @return {number[]} color - Color of fg
+# @param  {string}   parameter - parameter to move, {s|l}.
+# @return {number[]} color - Color of fg in hsl
 #
-readableDark = (bg, hsl, ratio) ->
-    hsl = formatHSL hsl
+darkOnLight = (bg, hsl, ratio, parameter) ->
+    [hue, s, l] = formatHSL hsl
 
-    # (l_bg + 0.05) / (l_fg + 0.05) == ratio
-    l_bg = rgb2luminance bg
-    l_fg = (l_bg + 0.05) / ratio - 0.05
+    # (luminance_fg + 0.05) / (luminance_bg + 0.05) > ratio
+    luminance_bg = rgb2luminance bg
 
-    # rgb を計算
-    rgb = hsl2rgb hsl
-    result = luminance2rgb l_fg, rgb
-    return result
+    # 気合で探す
+    candidates = (c / 100.0 for c in [0..100])
+    readables = candidates.filter (c) ->
+        hsl_candidate = switch parameter
+            when 's' then [hue, c, l]
+            when 'l' then [hue, s, c]
+        rgb = hsl2rgb hsl_candidate
+        luminance = rgb2luminance rgb
+        return (luminance_bg  + 0.05) / (luminance + 0.05) > ratio
 
+    # the color cant be readable
+    return null if readables.length == 0
 
+    p = if parameter == 's' then s else l
+    p_nearest = -1
+    diff_min = 2.0
+    for r in readables
+        diff = Math.abs(r - p)
+        if diff < diff_min
+            p_nearest = r
+            diff_min = diff
+
+    hsl_new = switch parameter
+        when 's' then [hue, p_nearest, l]
+        when 'l' then [hue, s, p_nearest]
+
+    rgb_new = hsl2rgb hsl_new
+    luminance_new = rgb2luminance rgb_new
+    contrast_new = (luminance_bg  + 0.05) / (luminance_new + 0.05)
+
+    return {
+        hsl: hsl_new
+        rgb: rgb_new
+        contrast: contrast_new
+    }
 
 formatHSL = (hsl) ->
     [h, s, l] = hsl
@@ -90,7 +144,7 @@ formatHSL = (hsl) ->
 
 
 
-# Get difference omong r, g, b  assuming s = v = 1
+# Convert hsl to rgb.
 #
 # @param  {number}   hsl   - [0-360, 0-1, 0-1]
 # @param  {number[]} color - [0-255]
@@ -110,6 +164,38 @@ hsl2rgb = (hsl) ->
     m = l - 0.5 * c
     return rgb.map (x) -> (x + m) * 255
 
+
+hs2_l2rgb = (h, s) ->
+    (l) -> hsl2rgb [h, s, l]
+
+hl2_s2rgb = (h, l) ->
+    (s) -> hsl2rgb [h, s, l]
+
+h2_sl2rgb = (h) ->
+    (s, l) -> hsl2rgb [h, s, l]
+
+hhcl2rgb1 = (hh, c, l) ->
+    cr = (((hh+5)%6)/4)|0
+    xr = (((hh+1)%3)/2)|0
+    cg = (((hh+3)%6)/4)|0
+    xg = (((hh+2)%3)/2)|0
+    cb = (((hh+1)%6)/4)|0
+    xb = (((hh+3)%3)/2)|0
+    return [cr*c + xr*x, cg*c + xg*x, cb*c + xb*x]
+
+hh2_sl2rgb1 = (hh) ->
+    (s, l) ->
+        c = sl2c s, l
+        hhcl2rgb1 hh, c, l
+
+sl2c = (s, l) ->
+    (1 - Math.abs(2*l - 1)) * s
+
+sl2x = (s, l) ->
+    c = sl2c s, l
+    c * (1 - Math.abs(h % 2 - 1))
+
+
 module.exports =
-    readableDark: readableDark
-    readableLight: readableLight
+    darkOnLight: darkOnLight
+    lightOnDark: lightOnDark

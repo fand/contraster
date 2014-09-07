@@ -75,7 +75,6 @@ hsl2rgb = (hsl) ->
 #
 rgb2hsl = (rgb) ->
     [r, g, b] = (x / 255.0 for x in rgb)
-    console.log [r, g, b]
     mmax = Math.max(r,g,b)
     mmin = Math.min(r,g,b)
     c = mmax - mmin
