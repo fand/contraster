@@ -8,7 +8,7 @@ app.directive 'contrast', ->
         hue:  '='
         text: '@'
     replace: true
-    templateUrl: '/templates/contrast.html'
+    templateUrl: './templates/contrast.html'
     link: (scope, element, attr) ->
         box = element[0].querySelector '.box'
         bg = util.getBg '.box'
