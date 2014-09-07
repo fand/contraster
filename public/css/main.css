@@ -1,0 +1,39 @@
+.contraster {
+  float: left; }
+  .contraster .box {
+    width: 300px;
+    margin: 20px;
+    background-color: #edeeef;
+    border: 2px solid #abc;
+    border-radius: 3px;
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.3);
+    vertical-align: middle;
+    text-align: center;
+    overflow-y: visible; }
+    .contraster .box h1 {
+      font-size: 72px;
+      line-height: 72px; }
+    .contraster .box h2 {
+      font-size: 16px;
+      line-height: 20px; }
+    .contraster .box .form {
+      font-size: 12px;
+      line-height: 30px;
+      margin-bottom: 20px; }
+      .contraster .box .form div {
+        display: inline-block;
+        text-align: left;
+        min-width: 70px; }
+      .contraster .box .form input {
+        min-width: 170px; }
+  .contraster .validator {
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+    bottom: 100px; }
+    .contraster .validator.valid {
+      color: #0a0; }
+    .contraster .validator.invalid {
+      color: #f00; }
+
+/*# sourceMappingURL=main.css.map */

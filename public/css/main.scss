@@ -1,0 +1,54 @@
+.contraster {
+  float: left;
+
+  .box {
+
+    width: 300px;
+    //    height: 350px;
+    margin: 20px;
+    background-color: #edeeef;
+    border: 2px solid #abc;
+    border-radius: 3px;
+    box-shadow: 0px 5px 5px rgba(0,0,0,0.3);
+    vertical-align: middle;
+    text-align: center;
+
+    overflow-y: visible;
+
+    h1 {
+      font-size: 72px;
+      line-height: 72px;
+    }
+    h2 {
+      font-size: 16px;
+      line-height: 20px;
+    }
+
+    .form {
+      font-size: 12px;
+      line-height: 30px;
+      margin-bottom: 20px;
+
+
+      div {
+        display: inline-block;
+        text-align: left;
+        min-width: 70px;
+      }
+      input {
+        min-width: 170px;
+      }
+    }
+  }
+
+  .validator {
+    //        position: absolute;
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+    bottom: 100px;
+    &.valid   { color: #0a0; }
+    &.invalid { color: #f00; }
+  }
+
+}
