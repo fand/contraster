@@ -26,7 +26,6 @@ app.directive 'contrast', ->
                 scope.h = result.hsl[0]
                 scope.s = result.hsl[1] * 100.0
                 scope.l = result.hsl[2] * 100.0
-
             else
                 scope.is_valid = false
                 scope.hsl_code = '-'
