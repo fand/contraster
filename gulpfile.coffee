@@ -18,17 +18,17 @@ gulp.task 'js', ->
     .bundle()
     .pipe plumber()
     .pipe source 'app.js'
-    .pipe gulp.dest 'public'
+    .pipe gulp.dest 'docs'
 
 gulp.task 'css', ->
     gulp
-        .src './public/css/*.scss'
+        .src './docs/css/*.scss'
         .pipe plumber()
         .pipe sass()
-        .pipe gulp.dest './public/css'
+        .pipe gulp.dest './docs/css'
 
 gulp.task 'server', ->
-    gulp.src 'public/'
+    gulp.src 'docs/'
         .pipe webserver
             open: true
             livereload: true
@@ -36,7 +36,7 @@ gulp.task 'server', ->
 
 gulp.task 'watch', ['build'], ->
     gulp.watch 'src/**/*.coffee', ['js']
-    gulp.watch 'public/**/*.scss', ['css']
+    gulp.watch 'docs/**/*.scss', ['css']
 
 gulp.task 'build', ['js', 'css']
 gulp.task 'default', ['build', 'watch', 'server']
