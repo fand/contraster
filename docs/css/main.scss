@@ -1,5 +1,9 @@
+section {
+    display: flex;
+}
+
 .contraster {
-  float: left;
+  // flex: 1;
 
   .box {
 
@@ -51,4 +55,8 @@
     &.invalid { color: #f00; }
   }
 
+}
+
+footer {
+    margin: 20px 0;
 }

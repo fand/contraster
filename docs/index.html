@@ -2,9 +2,22 @@
 <link rel="stylesheet" href="./css/main.css" type="text/css">
 
 <body ng-App="contrastApp">
-  <div contrast hue="20"  text="foo"></div>
-  <div contrast hue="140" text="bar"></div>
-  <div contrast hue="260" text="baz"></div>
+  <header>
+    <h1>contraster</h1>
+    <p>
+      Computes the contrast between background and text and shows whether it is readable.
+    </p>
+  </header>
+
+  <section>
+    <div contrast hue="20"  text="foo"></div>
+    <div contrast hue="140" text="bar"></div>
+    <div contrast hue="260" text="baz"></div>
+  </section>
+
+  <footer>
+    Created by <a href="https://github.com/fand">@fand</a>.
+  </footer>
 </body>
 
 <script src="./app.js"></script>
